@@ -25,7 +25,7 @@ while principal > 0:
         principal = principal + overpayment
         total_paid = total_paid - overpayment
 
-    print(month, total_paid, principal)
+    print(f'{month} ${total_paid:,.2f} ${principal:,.2f}')
     
-print('Total paid', total_paid)
-print('Months', month)
+print(f'Total paid: ${total_paid:,.2f}')
+print(f'Months: {month}')
