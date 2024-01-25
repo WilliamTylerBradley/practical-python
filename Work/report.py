@@ -10,10 +10,14 @@ def portfolio_cost(filename):
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
         headers = next(rows)
-        for row in rows:
-            nshares = int(row[1])
-            price = float(row[2])
-            total_cost += nshares * price
+        for rowno, row in enumerate(rows, start=1):
+            record = dict(zip(headers, row))
+            try:
+                nshares = int(record['shares'])
+                price = float(record['price'])
+                total_cost += nshares * price
+            except ValueError:
+                print(f'Row {rowno}: Bad row:{row}')
     return total_cost
 
 def read_portfolio(filename):
@@ -23,11 +27,14 @@ def read_portfolio(filename):
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
         headers = next(rows)
-        for row in rows:
-            holding = {'name':row[0], 
-                       'shares':int(row[1]),
-                        'price':float(row[2])}
-            portfolio.append(holding)
+        for rowno, row in enumerate(rows, start=1):
+            record = dict(zip(headers, row))
+            try:
+                record['shares'] = int(record['shares'])
+                record['price'] = float(record['price'])
+                portfolio.append(record)
+            except ValueError:
+                print(f'Row {rowno}: Bad row:{row}')           
     return portfolio
 
 def read_prices(filename):
@@ -46,7 +53,7 @@ def make_report(portfolio, prices):
         report.append(row)
     return report
 
-portfolio = read_portfolio('Data\portfolio.csv')
+portfolio = read_portfolio('Data\portfoliodate.csv')
 prices = read_prices('Data\prices.csv')
 report = make_report(portfolio, prices)
 
